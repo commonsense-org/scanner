@@ -11,7 +11,7 @@ For more information please see LINKHERE
 Usage: ./check.sh [OPTIONS] URL
 
 Where URL is a URL you want to check and OPTIONS is one of:
-
+```
   -d: Include debug information. This includes extra information about response
       data. Does nothing if -c is present.
   -h: This help message and exit.
@@ -26,7 +26,7 @@ Where URL is a URL you want to check and OPTIONS is one of:
           in the range200-399.
         - HSTS_ENABLED[yes|no]: Whether or not Strict-Transport-Security headers are set.
       This mode is useful for batch calls.
-
+```
 Note that this script requires curl, and sed.
 
 
@@ -38,12 +38,12 @@ intended to be passed a csv file of URLs/paths to check.
 Usage: ./batch.sh [OPTIONS] CSVFILE
 
 Where CSVFILE is a CSV file containing a column of URLs to check.
-
+```
   -f: Indicate which column in the csv contains the URLs to check. Default 1
   -c: Indicates how many concurrent connections. Default 8
   -k: Keep same order. Default no
   -h: This help message and exit.
-
+```
 Note that this script requires parallel, and awk.
 
 # shim.sh

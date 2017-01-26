@@ -49,3 +49,8 @@ Note that this script requires parallel, and awk.
 # shim.sh
 
 This is a trivial helper script used by batch.sh to parse csv data and call heck.sh.
+
+# License 
+MIT License
+
+Copyright (c) 2017 Common Sense

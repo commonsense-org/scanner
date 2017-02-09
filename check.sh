@@ -106,7 +106,7 @@ output() {
 ################################################################################
 # check if http redirects to https
 ################################################################################
-redirect=`curl -Ls -o /dev/null -w %{url_effective} http://$path`
+redirect=`curl ${CURLOPTS} -Ls -o /dev/null -w %{url_effective} http://$path`
 # reset path to use the effective URL
 oldpath=$path
 path=`echo $redirect | sed 's/https\?:\/\///'`
@@ -125,7 +125,7 @@ fi
 ################################################################################
 # check if https request is in 200-399 range
 ################################################################################
-https=`curl -s -o /dev/null -w %{http_code} https://$path;`
+https=`curl  ${CURLOPTS} -s -o /dev/null -w %{http_code} https://$path;`
 if [ "$https" -ge "200" -a "$https" -lt "400" ]; then
   output 'yes' 'https returned success code' "(${path}) ${https}"
 else
@@ -135,7 +135,7 @@ fi
 ################################################################################
 # check if http includes strict transport headers
 ################################################################################
-hsts=`curl -s -D- https://$path | grep Strict-Transport-Security`
+hsts=`curl  ${CURLOPTS} -s -D- https://$path | grep Strict-Transport-Security`
 if [[ -z "$hsts" ]]; then
   output 'no' 'HSTS is NOT enabled' "(${path}) ${hsts}"
 else

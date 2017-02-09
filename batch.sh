@@ -61,4 +61,4 @@ fi
 # Strip leading, trailing quotes and spaces and remove http(s):// if present.
 csvfile=$1
 
-parallel -j+${CONCURRENCY} ${ORDER} -a ${csvfile} "${SCRIPTPATH}/shim.sh ${COLUMN}"
+parallel -j${CONCURRENCY} ${ORDER} -a ${csvfile} "${SCRIPTPATH}/shim.sh ${COLUMN}"

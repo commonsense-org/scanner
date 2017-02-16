@@ -35,6 +35,8 @@ Note that this script requires curl, and sed.
 This script is used to batch call the check script in this package. It is
 intended to be passed a csv file of URLs/paths to check.
 
+For more information please see [these examples](examples/batch.md).
+
 Usage: ./batch.sh [OPTIONS] CSVFILE
 
 Where CSVFILE is a CSV file containing a column of URLs to check.

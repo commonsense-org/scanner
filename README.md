@@ -6,7 +6,7 @@ This script scans a given URL to check for various security details.
      200-399 (success)
   3. Check that HSTS Strict-Transport-Security is present in the headers.
 
-For more information please see LINKHERE
+For more information please see [these examples](examples/check.md).
 
 Usage: ./check.sh [OPTIONS] URL
 
@@ -35,6 +35,8 @@ Note that this script requires curl, and sed.
 This script is used to batch call the check script in this package. It is
 intended to be passed a csv file of URLs/paths to check.
 
+For more information please see [these examples](examples/batch.md).
+
 Usage: ./batch.sh [OPTIONS] CSVFILE
 
 Where CSVFILE is a CSV file containing a column of URLs to check.
@@ -48,9 +50,9 @@ Note that this script requires parallel, and awk.
 
 # shim.sh
 
-This is a trivial helper script used by batch.sh to parse csv data and call heck.sh.
+This is a trivial helper script used by batch.sh to parse csv data and call check.sh.
 
-# License 
+# License
 MIT License
 
 Copyright (c) 2017 Common Sense

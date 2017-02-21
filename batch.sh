@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # Output constants
-RED='\e[31m'
-GREEN='\e[32m'
-YELLOW='\e[33m'
-BLUE='\e[34m'
-NC='\e[0m'
+RED='\033[31m'
+GREEN='\033[32m'
+YELLOW='\033[33m'
+BLUE='\033[34m'
+NC='\033[0m'
 FAIL="${RED}FAIL: ${NC}"
 ERROR="${RED}ERROR: ${NC}"
 PASS="${GREEN}PASS: ${NC}"

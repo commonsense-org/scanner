@@ -5,5 +5,5 @@ popd > /dev/null
 
 # This might not work so well on messy csv's
 path=`echo $2 | awk -v x=${1} -F ',|"' '{print $x}'`
-
+echo -n $2,
 ${SCRIPTPATH}/check.sh -c "${path}" && echo

@@ -84,6 +84,9 @@ path=$(echo $1 | sed -e 's/^"//' -e 's/"$//' -e 's/^//' -e 's/ $//' -e 's/https\
 output() {
   if [ "$CSV" -eq "1" ]; then
     echo -n ",$1"
+    if [ "$DEBUG" -eq "1" ]; then
+      echo -n ",$3";
+    fi
     return
   fi
 
@@ -103,33 +106,55 @@ output() {
   fi
 }
 
+isSuccess() {
+  urlStatus=`curl  ${CURLOPTS} -s -o /dev/null -w %{http_code} $1;`
+  if [ "$urlStatus" -ge "200" -a "$urlStatus" -lt "400" ]; then
+    echo $urlStatus
+    return 0
+  else
+    echo $urlStatus
+    return 1
+  fi
+}
+
+
 ################################################################################
 # check if http redirects to https
 ################################################################################
 redirect=`curl ${CURLOPTS} -Ls -o /dev/null -w %{url_effective} http://$path`
-# reset path to use the effective URL
+# reset path to use the effective redirect URL
 oldpath=$path
-path=`echo $redirect | sed 's/https\?:\/\///'`
 
 # If csv mode output old path and new path.
 if [ "$CSV" -eq "1" ]; then
   echo -n "$oldpath,$path"
 fi
+path=`echo $redirect | sed 's/https\?:\/\///'`
 
 if [[ $redirect == https* ]]; then
-  output 'yes' 'http redirects to https' "(${path}) ${redirect}"
+  output 'yes' 'http redirects to https' "${redirect}"
 else
-  output 'no' 'http does NOT redirect to https' "(${path}) ${redirect}"
+  output 'no' 'http does NOT redirect to https' "${redirect}"
 fi
 
 ################################################################################
 # check if https request is in 200-399 range
 ################################################################################
-https=`curl  ${CURLOPTS} -s -o /dev/null -w %{http_code} https://$path;`
-if [ "$https" -ge "200" -a "$https" -lt "400" ]; then
-  output 'yes' 'https returned success code' "(${path}) ${https}"
+httpUrl=`isSuccess http://${path}`
+if [ $? -eq 0 ]; then
+  output 'yes' 'http returned success code' "${httpUrl}"
 else
-  output 'no' 'https did NOT return success code' "(${path}) ${https}"
+  output 'no' 'http did NOT return success code' "${httpUrl}"
+fi
+
+################################################################################
+# check if https request is in 200-399 range
+################################################################################
+https=`isSuccess https://${path}`
+if [ $? -eq 0 ]; then
+  output 'yes' 'https returned success code' "${https}"
+else
+  output 'no' 'https did NOT return success code' "${https}"
 fi
 
 ################################################################################
@@ -137,7 +162,7 @@ fi
 ################################################################################
 hsts=`curl  ${CURLOPTS} -s -D- https://$path | grep Strict-Transport-Security`
 if [[ -z "$hsts" ]]; then
-  output 'no' 'HSTS is NOT enabled' "(${path}) ${hsts}"
+  output 'no' 'HSTS is NOT enabled' "${hsts}"
 else
-  output 'yes' 'HSTS is enabled' "(${path}) ${hsts}"
+  output 'yes' 'HSTS is enabled' "${hsts}"
 fi
